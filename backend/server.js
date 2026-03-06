@@ -14,7 +14,11 @@ const STAND_USERNAME = process.env.STAND_USERNAME;
 const STAND_PASSWORD = process.env.STAND_PASSWORD;
 const TIME_API_URL = process.env.TIME_API_URL || 'https://timeapi.io/api/Time/current/zone?timeZone=Asia/Yekaterinburg';
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 const SCHEDULE_FILE = path.join(__dirname, 'schedule.json');

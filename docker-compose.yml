@@ -3,14 +3,17 @@ version: '3.8'
 services:
   backend:
     build: ./backend
+    container_name: cleaner-app
+    env_file:
+      - .env
     ports:
       - "3001:3001"
-    environment:
-      - NODE_ENV=development
+    restart: unless-stopped
 
   frontend:
     build: ./frontend
     ports:
-      - "3000:3000"
+      - "3000:80"
     depends_on:
       - backend
+    restart: unless-stopped
