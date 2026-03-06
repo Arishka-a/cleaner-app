@@ -62,29 +62,27 @@ function App() {
   }
 
   return (
-    <div className="container">
-      <h1>Очистка устройств</h1>
-
+    <div className="page">
       <div className="card">
-        <label htmlFor="time-input">Время автоматической очистки</label>
-        <div className="time-row">
-          <input
-            id="time-input"
-            type="time"
-            value={time}
-            onChange={e => setTime(e.target.value)}
-          />
-          <button onClick={handleSaveTime}>Сохранить время</button>
-        </div>
-      </div>
+        <p className="label">Время автоматической очистки</p>
 
-      <div className="card">
+        <input
+          type="time"
+          value={time}
+          onChange={e => setTime(e.target.value)}
+          className="time-input"
+        />
+
+        <button className="btn btn-save" onClick={handleSaveTime}>
+          Сохранить
+        </button>
+
         <button
-          className="cleanup-btn"
+          className="btn btn-cleanup"
           onClick={handleRunCleanup}
           disabled={loading}
         >
-          {loading ? 'Выполняется...' : 'Запустить очистку сейчас'}
+          {loading ? 'Выполняется...' : 'Запуск очистки'}
         </button>
       </div>
 
