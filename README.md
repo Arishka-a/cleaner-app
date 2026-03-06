@@ -52,12 +52,12 @@ docker-compose down
 ## Локальная разработка (без Docker)
 
 ```bash
-# Терминал 1 — бэкенд
+# бэкенд
 cd backend
 npm install
 node server.js
 
-# Терминал 2 — фронтенд
+# фронтенд
 cd frontend
 npm install
 npm run dev
@@ -79,21 +79,21 @@ npm run dev
 ```
 cleaner-app/
 ├── backend/
-│   ├── server.js          # Сервер Express, логика очистки, планировщик
+│   ├── server.js          
 │   ├── package.json
 │   ├── Dockerfile
-│   └── schedule.json      # Создаётся автоматически
+│   └── schedule.json      
 ├── frontend/
 │   ├── src/
-│   │   ├── App.jsx        # Главный компонент
-│   │   ├── App.css        # Стили
-│   │   └── main.jsx       # Точка входа
+│   │   ├── App.jsx        
+│   │   ├── App.css        
+│   │   └── main.jsx       
 │   ├── package.json
 │   ├── Dockerfile
-│   ├── nginx.conf         # Конфиг nginx (проксирование API)
-│   └── .env.development   # API URL для локальной разработки
+│   ├── nginx.conf         
+│   └── .env.development   
 ├── docker-compose.yml
-├── .env.example           # Образец переменных окружения
+├── .env.example           
 ├── .gitignore
 └── README.md
 ```
