@@ -5,6 +5,7 @@ build/
 *.log
 .DS_Store
 Thumbs.db
+backend/test-time.js
 
 
 backend/schedule.json
