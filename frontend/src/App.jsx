@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
@@ -7,6 +7,8 @@ function App() {
   const [time, setTime] = useState('03:00');
   const [notification, setNotification] = useState(null);
   const [loading, setLoading] = useState(false);
+  const timerRef = useRef(null);
+  const lastNotifRef = useRef({ message: '', time: 0 });
 
   useEffect(() => {
     fetch(`${API_URL}/schedule`)
@@ -18,8 +20,24 @@ function App() {
   }, []);
 
   function showNotification(message, type = 'success') {
+    const now = Date.now();
+    const last = lastNotifRef.current;
+
+    if (last.message === message && now - last.time < 3300) {
+      return;
+    }
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    lastNotifRef.current = { message, time: now };
     setNotification({ message, type });
-    setTimeout(() => setNotification(null), 4000);
+
+    timerRef.current = setTimeout(() => {
+      setNotification(null);
+      timerRef.current = null;
+    }, 3000);
   }
 
   async function handleSaveTime() {
@@ -63,34 +81,37 @@ function App() {
 
   return (
     <div className="page">
-      <div className="card">
-        <p className="label">Время автоматической очистки</p>
+      <div className="wrapper">
+        <h1 className="title">Очистка устройств</h1>
+        <div className="card">
+          <p className="label">Время автоматической очистки</p>
 
-        <input
-          type="time"
-          value={time}
-          onChange={e => setTime(e.target.value)}
-          className="time-input"
-        />
+          <input
+            type="time"
+            value={time}
+            onChange={e => setTime(e.target.value)}
+            className="time-input"
+          />
 
-        <button className="btn btn-save" onClick={handleSaveTime}>
-          Сохранить
-        </button>
+          <button className="btn btn-save" onClick={handleSaveTime}>
+            Сохранить
+          </button>
 
-        <button
-          className="btn btn-cleanup"
-          onClick={handleRunCleanup}
-          disabled={loading}
-        >
-          {loading ? 'Выполняется...' : 'Запуск очистки'}
-        </button>
-      </div>
-
-      {notification && (
-        <div className={`notification ${notification.type}`}>
-          {notification.message}
+          <button
+            className="btn btn-cleanup"
+            onClick={handleRunCleanup}
+            disabled={loading}
+          >
+            {loading ? 'Выполняется...' : 'Запуск очистки'}
+          </button>
         </div>
-      )}
+
+        {notification && (
+          <div className={`notification ${notification.type}`}>
+            {notification.message}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
